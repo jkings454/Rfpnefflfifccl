@@ -26,4 +26,4 @@ def get_post_data():
         return "Unsupported HTTP request", 400
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=app.config["DEBUG"])
