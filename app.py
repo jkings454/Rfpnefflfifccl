@@ -2,6 +2,9 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+app.config.from_object("defaultsettings.cfg") # load settings from the file defaultsettings.cfg
+app.config.from_envvar("prodsettings.cfg")  # load settings for production, if envvar exists.
+
 @app.route("/")
 def index():
     return "Hello world!"
