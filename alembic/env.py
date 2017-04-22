@@ -1,8 +1,15 @@
 from __future__ import with_statement
-from alembic import context
-from sqlalchemy import engine_from_config, pool
+
 from logging.config import fileConfig
-import models
+
+from alembic import context
+
+import os, sys
+
+from sqlalchemy import engine_from_config, pool
+
+sys.path.append(os.getcwd())
+from backend import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
