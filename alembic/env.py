@@ -10,6 +10,7 @@ from sqlalchemy import engine_from_config, pool
 
 sys.path.append(os.getcwd())
 from backend import models
+from backend.app import app
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -43,7 +44,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = app.config["DATABASE_URI"]
     context.configure(
         url=url, target_metadata=target_metadata, literal_binds=True)
 

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from models import DataPoint, Base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -32,11 +32,28 @@ def index():
 def get_post_data():
     if request.method == "GET":
         # We're sending all of our data to the user!
-        return "GET request received!"
+        data = session.query(DataPoint).all()
+        return jsonify([i.serialize for i in data])
 
     elif request.method == "POST":
         # There's a new data point in town!
-        return "POST request received!"
+        name = request.form.get("name") or "Anonymous"
+        Rstar = request.form.get("Rstar", type=float)
+        fp = request.form.get("fp", type=float)
+        ne = request.form.get("ne", type=float)
+        fl = request.form.get("fl", type=float)
+        fi = request.form.get("fi", type=float)
+        fc = request.form.get("fc", type=float)
+        L = request.form.get("L", type=float)
+
+        N = Rstar * fp * ne * fl * fi * fc * L
+
+        new_data = DataPoint(name=name, N=N, Rstar=Rstar, fp=fp, ne=ne, fl=fl, fi=fi, fc=fc, L=L)
+
+        session.add(new_data)
+        session.commit()
+
+        return jsonify(new_data.serialize)
 
     else:
         # The only two requests that we support are "GET" and "POST"
